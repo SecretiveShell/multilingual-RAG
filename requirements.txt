@@ -1,0 +1,4 @@
+chromadb
+ollama
+pdfplumber
+langdetect
