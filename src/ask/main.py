@@ -1,14 +1,18 @@
-import ollama
+from ollama import Client
 import chromadb
 import chromadb.utils.embedding_functions as embedding_functions
 import langdetect
 
+OLLAMA_URL = 'http://localhost:11434/api'
+
 client = chromadb.PersistentClient()
 embed = embedding_functions.OllamaEmbeddingFunction(
-    url="http://localhost:11434/api/embeddings",
+    url=f"{OLLAMA_URL}/embeddings",
     model_name="nomic-embed-text"
 )
 collection = client.get_or_create_collection('pdf-data', embedding_function=embed)
+
+ollama = Client(host=OLLAMA_URL)
 
 while True:
         question = input('Enter your question: ')
