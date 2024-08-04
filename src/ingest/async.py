@@ -22,8 +22,7 @@ collection = client.get_or_create_collection('pdf-data', embedding_function=embe
 
 ollama = AsyncClient(host=OLLAMA_URL)
 
-async def parse_page(page) :
-    text = page.extract_text()
+async def parse_page(text) :
 
     # translate and format the document
     response = await ollama.chat(model=LLM_MODEL, messages=[
@@ -56,9 +55,9 @@ async def main() :
     jobs = []
     with pdfplumber.open(file) as pdf:
         for page in pdf.pages :
-            jobs.append(parse_page(page))
+            jobs.append(parse_page(page.extract_text()))
 
-        await asyncio.gather(*jobs)
+    await asyncio.gather(*jobs)
     
     print("[[Done]]")
 
